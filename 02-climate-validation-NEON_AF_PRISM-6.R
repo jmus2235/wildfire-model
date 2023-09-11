@@ -1,3 +1,7 @@
+## Climate variable validation script to compare temperature, vapor pressure deficit and precipitation data 
+## from PRISM with NEON tower data
+## Copyright NEON 2023
+
 ## ----setup-env--------------------------------------------------------------------------------------------
 # Install needed package (only uncomment & run if not already installed)
 #install.packages("neonUtilities")
