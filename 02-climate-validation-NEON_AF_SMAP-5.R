@@ -1,3 +1,6 @@
+## Climate variable validation script to compare soil moisture data from SMAP data with NEON tower data
+## Copyright NEON 2023
+
 ## ----setup-env--------------------------------------------------------------------------------------------
 # Install needed package (only uncomment & run if not already installed)
 #install.packages("neonUtilities")
