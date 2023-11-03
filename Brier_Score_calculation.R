@@ -5,6 +5,7 @@
 library(DescTools)
 library(ModelMetrics)
 library (dplyr)
+library(pROC)
 
 # set working directory
 wd <- "~/R_Scripts/NEON-Climate-variable-validation/data/validation" 
@@ -18,6 +19,7 @@ validation_stats <- data.frame(filename=character(),
                            specificity=numeric(),
                            F1_Score=numeric(),
                            brier_score=numeric(),
+                           auc_score=numeric(),
                            stringsAsFactors=FALSE)
 
 # Save all file names to  variable
@@ -42,6 +44,13 @@ goulden_score_manual <- sqrt(mean((predicted_probabilities - observed_outcomes)^
 
 # Log-loss using ModelMetrics
 logloss_modelmetric <- logLoss(observed_outcomes, predicted_probabilities)
+
+# AUC calculation
+roc_object <- roc( observed_outcomes, predicted_probabilities)
+# auc1 <- as.data.frame(auc(roc_object))
+auc1 <- (auc(roc_object))
+auc1 <- as.numeric(auc1)
+auc2 <- as.data.frame(auc1)
 
 # Create confusion matrix
 true_positive <- dfsubset %>% 
@@ -85,7 +94,7 @@ F1_Score
 filename <- as.data.frame(i)
 
 # Merge data frames with stats
-df_merge <- cbind(filename, accuracy, precision, recall, specificity, F1_Score, brier_score_desc)
+df_merge <- cbind(filename, accuracy, precision, recall, specificity, F1_Score, brier_score_desc, auc2)
 
 # Rename columns
 colnames(df_merge)[1] = "filename"
@@ -95,6 +104,7 @@ colnames(df_merge)[4] = "recall"
 colnames(df_merge)[5] = "specificity"
 colnames(df_merge)[6] = "F1_Score"
 colnames(df_merge)[7] = "brier_score"
+colnames(df_merge)[8] = "auc_score"
 
 # Append dataframes from different years together into one output dataframe
 validation_stats <- bind_rows(validation_stats, df_merge)
